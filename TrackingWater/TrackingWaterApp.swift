@@ -12,6 +12,7 @@ struct TrackingWaterApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark)
         }
     }
 }

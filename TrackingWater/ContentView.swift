@@ -9,14 +9,21 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        
-        VStack {
-            DropFigure()
-                .frame(width: 300, height: 300)
+        NavigationStack {
+            VStack {
+                
+            }
+            .navigationTitle("Tracking Water")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    
+                }
+            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .preferredColorScheme(.dark)
 }
