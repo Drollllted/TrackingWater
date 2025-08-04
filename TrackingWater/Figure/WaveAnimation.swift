@@ -13,7 +13,7 @@ struct WaveAnimation: Shape {
     var waveHeight: CGFloat
     var offset: CGFloat
     
-    var animationData: CGFloat {
+    var animatableData: CGFloat {
         get{offset}
         set{offset = newValue}
     }
@@ -28,7 +28,7 @@ struct WaveAnimation: Shape {
         
         for value in stride(from: 0, to: rect.width, by: 2) {
             let x = value
-            let sine = sin(Angle(degrees: value + offset).radians)
+            let sine = sin((value + offset) * .pi * 2 / rect.width)
             let y = progressHeight  + (height * sine)
             
             path.addLine(to: CGPoint(x: x, y: y))
