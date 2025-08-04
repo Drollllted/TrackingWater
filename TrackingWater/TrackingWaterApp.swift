@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct TrackingWaterApp: App {
@@ -14,5 +15,6 @@ struct TrackingWaterApp: App {
             ContentView()
                 .preferredColorScheme(.dark)
         }
+        .modelContainer(for: WaterInTake.self)
     }
 }
