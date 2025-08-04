@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct InformationView: View {
+    
+    @Environment(\.modelContext) var context
+    
     var body: some View {
         NavigationStack{
             VStack {
