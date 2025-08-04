@@ -11,12 +11,17 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                
+                DropFigure()
             }
             .navigationTitle("Tracking Water")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    
+                    NavigationLink {
+                        InformationView()
+                    } label: {
+                        InformationButton()
+                    }
+
                 }
             }
         }
