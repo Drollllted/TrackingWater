@@ -23,9 +23,8 @@ struct TrackingWaterApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(vm: TrackingWaterViewModel(modelContext: container.mainContext))
+            ContentView(vm: TrackingWaterViewModel(modelContext: ModelContext(container)))
                 .preferredColorScheme(.dark)
-                .modelContainer(for: WaterInTake.self)
         }
     }
 }

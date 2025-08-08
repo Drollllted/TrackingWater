@@ -18,7 +18,7 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 DropFigure(progress: vm.todayWater / vm.countInDay , onFirstTap: {
-                    showFirstTapModal = true
+                    vm.addWater(amount: 250)
                 }, onSecondTap: {
                     showSecondTapModal = true
                 })
@@ -40,18 +40,4 @@ struct ContentView: View {
             vm.fetchCurrentWaterDay()
         }
     }
-}
-
-#Preview {
-    
-    //Mock данные
-    
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: WaterInTake.self, configurations: config)
-    
-    let mockViewModel = TrackingWaterViewModel(modelContext: container.mainContext)
-    mockViewModel.todayWater = 1200 // Пример мок-данных
-    
-    return ContentView(vm: mockViewModel)
-        .preferredColorScheme(.dark)
 }

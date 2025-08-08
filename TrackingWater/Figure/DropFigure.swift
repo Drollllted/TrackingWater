@@ -57,7 +57,7 @@ struct DropFigure: View {
                 if onTapCount == 1 {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         if onTapCount == 1 {
-                            //onFirstTap()
+                            onFirstTap()
                             print("one tap")
                         }
                         onTapCount = 0

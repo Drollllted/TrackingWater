@@ -22,9 +22,14 @@ final class TrackingWaterViewModel: ObservableObject {
     
     func addWater(amount: Double) {
         let inTakes = WaterInTake(amount: amount)
+        print("1")
         modelContext.insert(inTakes)
+        print("2")
         todayWater += amount
+        print("3")
         try? modelContext.save()
+        print("4")
+        print(todayWater)
         
         if todayWater == countInDay {
             print("У тебя получилось! Молодец")
