@@ -11,6 +11,7 @@ import SwiftUI
 final class TrackingWaterViewModel: ObservableObject {
     @Published var todayWater: Double = 0
     @Published var selectedDay = Date()
+    @Published var countInDay: Double = 3000
     
     private let modelContext: ModelContext
     
@@ -24,6 +25,10 @@ final class TrackingWaterViewModel: ObservableObject {
         modelContext.insert(inTakes)
         todayWater += amount
         try? modelContext.save()
+        
+        if todayWater == countInDay {
+            print("У тебя получилось! Молодец")
+        }
     }
     
     func fetchCurrentWaterDay() {

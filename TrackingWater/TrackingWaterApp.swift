@@ -10,11 +10,22 @@ import SwiftData
 
 @main
 struct TrackingWaterApp: App {
+    
+    let container: ModelContainer
+    
+    init() {
+        do {
+            container = try ModelContainer(for: WaterInTake.self)
+        } catch {
+            fatalError("Failed to create ModelContainer for WaterInTake: \(error.localizedDescription)")
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(vm: TrackingWaterViewModel(modelContext: container.mainContext))
                 .preferredColorScheme(.dark)
+                .modelContainer(for: WaterInTake.self)
         }
-        .modelContainer(for: WaterInTake.self)
     }
 }
