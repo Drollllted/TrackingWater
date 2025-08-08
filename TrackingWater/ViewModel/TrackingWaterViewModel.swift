@@ -12,6 +12,7 @@ final class TrackingWaterViewModel: ObservableObject {
     @Published var todayWater: Double = 0
     @Published var selectedDay = Date()
     
+    
     private let modelContext: ModelContext
     
     init(modelContext: ModelContext) {

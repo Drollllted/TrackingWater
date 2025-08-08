@@ -11,11 +11,14 @@ import SwiftData
 struct InformationView: View {
     
     @Environment(\.modelContext) var context
+    @EnvironmentObject var vm: TrackingWaterViewModel
     
     var body: some View {
         NavigationStack{
             VStack {
-                
+                WeeklyChartsView(data: $vm.weeklyData)
+                    .frame(height: 200)
+                    .padding(.horizontal)
             }
             .navigationTitle("Information")
             .toolbar {
