@@ -6,12 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    
+    @StateObject var vm: TrackingWaterViewModel
+    @State private var showFirstTapModal = false
+    @State private var showSecondTapModal = false
+    
     var body: some View {
         NavigationStack {
             VStack {
-                DropFigure()
+                DropFigure(progress: vm.todayWater / vm.countInDay , onFirstTap: {
+                    vm.addWater(amount: 250)
+                }, onSecondTap: {
+                    showSecondTapModal = true
+                })
+                .frame(height: 350)
+                .environmentObject(vm)
             }
             .navigationTitle("Tracking Water")
             .toolbar {
@@ -25,10 +37,11 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear {
+            vm.fetchCurrentWaterDay()
+        }
+        .onAppear {
+            vm.deleteEveryDay()
+        }
     }
-}
-
-#Preview {
-    ContentView()
-        .preferredColorScheme(.dark)
 }

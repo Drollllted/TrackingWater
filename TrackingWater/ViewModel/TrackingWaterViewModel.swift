@@ -11,6 +11,7 @@ import SwiftUI
 final class TrackingWaterViewModel: ObservableObject {
     @Published var todayWater: Double = 0
     @Published var selectedDay = Date()
+    @Published var countInDay: Double = 3000
     
     
     private let modelContext: ModelContext
@@ -22,9 +23,19 @@ final class TrackingWaterViewModel: ObservableObject {
     
     func addWater(amount: Double) {
         let inTakes = WaterInTake(amount: amount)
+        print("1")
         modelContext.insert(inTakes)
+        print("2")
         todayWater += amount
+        print("3")
         try? modelContext.save()
+        print("4")
+        print(todayWater)
+        
+        if todayWater >= countInDay {
+            print("У тебя получилось! Молодец")
+            deleteTodayCount()
+        }
     }
     
     func fetchCurrentWaterDay() {
@@ -67,5 +78,40 @@ final class TrackingWaterViewModel: ObservableObject {
         return result.sorted {$0.date < $1.date}
         }
         
+    }
+    
+    //MARK: - Delete in SwiftData()
+    
+    func deleteTodayCount() {
+        let fetchDescriptor = FetchDescriptor<WaterInTake>()
+        
+        do {
+            let allEntries = try modelContext.fetch(fetchDescriptor)
+            
+            for entry in allEntries {
+                modelContext.delete(entry)
+            }
+            
+            todayWater = 0
+            
+            try modelContext.save()
+            
+            print("Данные успешно обнулены")
+        } catch {
+            print("Ошибка при обнулении данных: \(error)")
+        }
+    }
+    
+    
+    //MARK: - Delete every day
+    
+    func deleteEveryDay() {
+        let calenar = Calendar.current
+        let lastUpdateTodayWater = UserDefaults.standard.value(forKey: "lastUpdateTodayWater") as? Date ?? Date()
+        
+        if !calenar.isDateInToday(lastUpdateTodayWater) {
+            deleteTodayCount()
+            UserDefaults.standard.set(Date(), forKey: "lastUpdateTodayWater")
+        }
     }
 }

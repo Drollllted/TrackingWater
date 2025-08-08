@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct DropFigure: View {
-    
-   @State private var offset: CGFloat = 0
+    @EnvironmentObject var vm: TrackingWaterViewModel
+    @State private var offset: CGFloat = 0
+    var progress: Double
+    var onFirstTap: () -> Void
+    var onSecondTap: () -> Void
+    @State private var onTapCount: Int = 0
     
     var body: some View {
         
@@ -25,7 +29,7 @@ struct DropFigure: View {
                     .scaleEffect(x: 1.1, y: 1)
                     .offset(y: -1)
                 
-                WaveAnimation(progress: 0.5, waveHeight: 0.03, offset: offset)
+                WaveAnimation(progress: progress, waveHeight: 0.03, offset: offset)
                     .fill(Color.blue)
                     .mask {
                         Image(systemName: "drop.fill")
@@ -33,6 +37,13 @@ struct DropFigure: View {
                             .aspectRatio(contentMode: .fit)
                     }
                     .frame(width: min(size.width, size.height) * 0.9)
+                
+                VStack {
+                    Text("\(Int(progress * 100))%")
+                        .bold()
+                    Text("\(Int(vm.todayWater)) / \(Int(vm.countInDay))")
+                        .font(.subheadline)
+                }
             }
             .frame(width: size.width, height: size.height, alignment: .center)
             .onAppear {
@@ -40,13 +51,24 @@ struct DropFigure: View {
                     offset = size.width - 100
                 }
             }
+            .onTapGesture {
+                onTapCount += 1
+                
+                if onTapCount == 1 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        if onTapCount == 1 {
+                            onFirstTap()
+                            print("one tap")
+                        }
+                        onTapCount = 0
+                    }
+                } else if onTapCount == 2 {
+                    //onSecondTap()
+                    print("two tap")
+                    onTapCount = 0
+                }
+            }
         }
-        .frame(height: 350)
     }
     
-}
-
-#Preview{
-    DropFigure()
-        .preferredColorScheme(.dark)
 }
