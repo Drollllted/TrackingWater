@@ -23,6 +23,7 @@ struct ContentView: View {
                     showSecondTapModal = true
                 })
                 .frame(height: 350)
+                .environmentObject(vm)
             }
             .navigationTitle("Tracking Water")
             .toolbar {
@@ -38,6 +39,9 @@ struct ContentView: View {
         }
         .onAppear {
             vm.fetchCurrentWaterDay()
+        }
+        .onAppear {
+            vm.deleteEveryDay()
         }
     }
 }

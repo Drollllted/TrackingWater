@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DropFigure: View {
-    // @EnvironmentObject var vm: TrackingWaterViewModel
+    @EnvironmentObject var vm: TrackingWaterViewModel
     @State private var offset: CGFloat = 0
     var progress: Double
     var onFirstTap: () -> Void
@@ -41,7 +41,7 @@ struct DropFigure: View {
                 VStack {
                     Text("\(Int(progress * 100))%")
                         .bold()
-                    Text("\(String(format: "%.1f", progress * 2000))/2000 ml")
+                    Text("\(Int(vm.todayWater)) / \(Int(vm.countInDay))")
                         .font(.subheadline)
                 }
             }
