@@ -10,6 +10,7 @@ import SwiftUI
 struct DropFigure: View {
     @EnvironmentObject var vm: TrackingWaterViewModel
     @State private var offset: CGFloat = 0
+    @State private var pinkColor = Color(UIColor(red: 255/255, green: 29/255, blue: 141/255, alpha: 0.5))
     var progress: Double
     var onFirstTap: () -> Void
     var onSecondTap: () -> Void
@@ -30,7 +31,7 @@ struct DropFigure: View {
                     .offset(y: -1)
                 
                 WaveAnimation(progress: progress, waveHeight: 0.03, offset: offset)
-                    .fill(Color.blue)
+                    .fill(pinkColor)
                     .mask {
                         Image(systemName: "drop.fill")
                             .resizable()

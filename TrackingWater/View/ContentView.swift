@@ -30,6 +30,7 @@ struct ContentView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         InformationView()
+                            .environmentObject(vm)
                     } label: {
                         InformationButton()
                     }

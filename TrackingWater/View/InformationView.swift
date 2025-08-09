@@ -16,7 +16,8 @@ struct InformationView: View {
     var body: some View {
         NavigationStack{
             VStack {
-                WeeklyChartsView(data: $vm.weeklyData)
+                WeeklyChartsView(data: vm.weeklyData)
+                    .environmentObject(vm)
                     .frame(height: 200)
                     .padding(.horizontal)
             }
@@ -37,9 +38,4 @@ struct InformationView: View {
             }
         }
     }
-}
-
-#Preview {
-    InformationView()
-        .preferredColorScheme(.dark)
 }

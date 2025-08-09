@@ -12,6 +12,7 @@ final class TrackingWaterViewModel: ObservableObject {
     @Published var todayWater: Double = 0
     @Published var selectedDay = Date()
     @Published var countInDay: Double = 3000
+    @Published private(set) var weeklyData: [DailyWaterData] = []
     
     
     private let modelContext: ModelContext
@@ -19,6 +20,8 @@ final class TrackingWaterViewModel: ObservableObject {
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         fetchCurrentWaterDay()
+        updateWeeklyData()
+        
     }
     
     func addWater(amount: Double) {
@@ -34,7 +37,6 @@ final class TrackingWaterViewModel: ObservableObject {
         
         if todayWater >= countInDay {
             print("У тебя получилось! Молодец")
-            deleteTodayCount()
         }
     }
     
@@ -49,8 +51,14 @@ final class TrackingWaterViewModel: ObservableObject {
         } catch {
             print("Error fetching today intake:", error.localizedDescription)
         }
+    }
         
-    func weeklyData() -> [DailyWaterData] {
+        func updateWeeklyData() {
+            weeklyData = calculatedWeeklyData()
+        }
+        
+        
+    func calculatedWeeklyData() -> [DailyWaterData] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         var result: [DailyWaterData] = []
@@ -77,8 +85,6 @@ final class TrackingWaterViewModel: ObservableObject {
             
         return result.sorted {$0.date < $1.date}
         }
-        
-    }
     
     //MARK: - Delete in SwiftData()
     
