@@ -7,61 +7,35 @@
 
 import SwiftUI
 import SwiftData
+import Charts
 
 struct WeeklyChartsView: View {
     @EnvironmentObject var vm: TrackingWaterViewModel
-    let data: [DailyWaterData]
-    
-    private var maxAmount: Double {
-        data.map {$0.amount}.max() ?? 1
-    }
+    var data: [DailyWaterData]
     
     var body: some View {
-        VStack(spacing: 16) {
-            HStack(alignment: .bottom, spacing: 16) {
-                ForEach(data) { day in
-                    VStack(spacing: 8) {
-                        Text("\(Int(day.amount))")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.primary)
-                        
-                        ZStack(alignment: .bottom) {
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color(.systemGray5))
-                                .frame(width: 24, height: 150)
-                            
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(day.amount > vm.countInDay ? Color.red : Color.blue)
-                                .frame(width: 24, height: CGFloat(day.amount / maxAmount * 150))
-                                .overlay(
-                                    VStack {
-                                        Spacer()
-                                        if day.amount > 0 {
-                                            Text("\(Int(day.amount))")
-                                                .font(.system(size: 10, weight: .bold))
-                                                .foregroundColor(.white)
-                                                .padding(.bottom, 4)
-                                        }
-                                    }
-                                )
+        VStack {
+            Chart {
+                RuleMark(y: .value("drink Water", vm.countInDay))
+                    .lineStyle(StrokeStyle(dash: [5, 5]))
+                    .foregroundStyle(Color.gray.opacity(0.5))
+                
+                ForEach(data) { item in
+                    BarMark(x: .value("days", item.date), y: .value("drink Water", item.amount))
+                        .foregroundStyle(.blue)
+                        .annotation(position: .top, alignment: .top) {
+                            if item.amount != 0{
+                                Text(String(Int(item.amount)))
+                                    .font(.callout)
+                            }
                         }
-                        
-                        Text(day.date.formatted(.dateTime.weekday(.abbreviated)))
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.secondary)
-                    }
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
+            .padding()
+            .frame(width: 300, height: 300)
+            .aspectRatio(contentMode: .fit)
             
-            Text("Last 7 days")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            Spacer()
         }
-        .padding(.horizontal)
     }
 }

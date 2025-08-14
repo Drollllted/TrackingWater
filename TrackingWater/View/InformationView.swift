@@ -22,6 +22,9 @@ struct InformationView: View {
                     .padding(.horizontal)
             }
             .navigationTitle("Information")
+            .onAppear{
+                vm.updateWeeklyData()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {

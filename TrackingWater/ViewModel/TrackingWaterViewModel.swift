@@ -7,12 +7,15 @@
 
 import SwiftData
 import SwiftUI
+import Combine
 
 final class TrackingWaterViewModel: ObservableObject {
     @Published var todayWater: Double = 0
     @Published var selectedDay = Date()
     @Published var countInDay: Double = 3000
     @Published private(set) var weeklyData: [DailyWaterData] = []
+    
+    private var cancellables = Set<AnyCancellable>()
     
     
     private let modelContext: ModelContext
@@ -21,6 +24,15 @@ final class TrackingWaterViewModel: ObservableObject {
         self.modelContext = modelContext
         fetchCurrentWaterDay()
         updateWeeklyData()
+        
+        NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.fetchCurrentWaterDay()
+                    self?.updateWeeklyData()
+                }
+            }
+            .store(in: &cancellables)
         
     }
     
