@@ -13,13 +13,13 @@ struct ContentView: View {
     @StateObject var vm: TrackingWaterViewModel
     @State private var showFirstTapModal = false
     @State private var showSecondTapModal = false
-    @State private var selectedML: EnumVariables?
+    @State private var selectedAmount: EnumVariables? = .twoHundredhalf
     
     var body: some View {
         NavigationStack {
             VStack {
                 DropFigure(progress: vm.todayWater / vm.countInDay , onFirstTap: {
-                    vm.addWater(amount: 250)
+                    vm.addWater(amount: selectedAmount?.amountAdd ?? 250)
                 }, onSecondTap: {
                     showSecondTapModal = true
                 })
@@ -27,7 +27,7 @@ struct ContentView: View {
                 .environmentObject(vm)
             }
             .sheet(isPresented: $showSecondTapModal, content: {
-                SecondTapModalView(selectedML: $selectedML)
+                SecondTapModalView(selectedAmount: $selectedAmount)
                     .presentationDetents([.large])
             })
             

@@ -7,7 +7,9 @@
 
 import Foundation
 
-enum EnumVariables: String, CaseIterable {
+enum EnumVariables: Int, CaseIterable, Identifiable {
+    var id: Int { rawValue }
+    
     case oneHundred, twoHundred, twoHundredhalf, fiftyHundred, oneLitr
     
     var amountAdd: Double {
