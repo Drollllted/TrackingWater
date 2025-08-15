@@ -13,6 +13,7 @@ struct ContentView: View {
     @StateObject var vm: TrackingWaterViewModel
     @State private var showFirstTapModal = false
     @State private var showSecondTapModal = false
+    @State private var selectedML: EnumVariables?
     
     var body: some View {
         NavigationStack {
@@ -25,6 +26,11 @@ struct ContentView: View {
                 .frame(height: 350)
                 .environmentObject(vm)
             }
+            .sheet(isPresented: $showSecondTapModal, content: {
+                SecondTapModalView(selectedML: $selectedML)
+                    .presentationDetents([.large])
+            })
+            
             .navigationTitle("Tracking Water")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -38,6 +44,7 @@ struct ContentView: View {
                 }
             }
         }
+        
         .onAppear {
             vm.fetchCurrentWaterDay()
         }

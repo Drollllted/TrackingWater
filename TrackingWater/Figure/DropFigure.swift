@@ -64,7 +64,7 @@ struct DropFigure: View {
                         onTapCount = 0
                     }
                 } else if onTapCount == 2 {
-                    //onSecondTap()
+                    onSecondTap()
                     print("two tap")
                     onTapCount = 0
                 }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SecondTapModalView: View {
     
+    @Binding var selectedML: EnumVariables?
+    
     var body: some View {
         List{
             ForEach(EnumVariables.allCases, id: \.self) { amount in
@@ -19,11 +21,27 @@ struct SecondTapModalView: View {
                             .frame(width: 20, height: 20)
                             .foregroundStyle(.white)
                         
-                        Text("\(amount.amountString) ml ")
+                        Text("\(amount.amountString) ml")
                             .font(.system(size: 18))
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
                         
+                        Spacer()
+                        
+                        if selectedML == amount {
+                            Image(systemName: "checkmark")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundStyle(.blue)
+                                .padding(.horizontal)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.spring()) {
+                            selectedML = amount
+                        }
                     }
                 }
             }
@@ -31,9 +49,4 @@ struct SecondTapModalView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
     }
-}
-
-#Preview {
-    SecondTapModalView()
-        .preferredColorScheme(.dark)
 }
