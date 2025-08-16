@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct SecondTapModalView: View {
     @Binding var selectedAmount: EnumVariables?
     @Environment(\.dismiss) var dismiss
