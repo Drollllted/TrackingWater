@@ -13,6 +13,7 @@ struct OnboardingWeightView: View {
     @State private var isVisible: Bool = false
     @State private var weightUnit: EnumWeight = .kg
     @EnvironmentObject var vm: TrackingWaterViewModel
+    @Binding var showMainView: Bool
     
     var body: some View {
         VStack(alignment: .center) {
@@ -73,7 +74,10 @@ struct OnboardingWeightView: View {
             }
             
             Button {
-                calculatedCountWaterInDay()
+                let calculatedNorm = calculateWaterNorm()
+                vm.updateCountInDay(amountInDay: calculatedNorm)
+                OnboardingManager.completeOnboarding()
+                showMainView = false
             } label: {
                 Text("Get Started")
                     .font(.system(size: 20))
@@ -96,26 +100,11 @@ struct OnboardingWeightView: View {
         }
     }
     
-    func calculatedCountWaterInDay() {
-        var weightInKg: Double = 0.0
-        
-        if weightUnit == .kg {
-            weightInKg = Double(weightValue)
-        } else if weightUnit == .pht {
-            weightInKg = Double(weightValue) * 0.453592
-        }
-        
-        let normWaterInDay = weightInKg * 30
-        
-        vm.countInDay = round(normWaterInDay)
-        print(vm.countInDay)
+    private func calculateWaterNorm() -> Double {
+        let weightInKg = weightUnit == .kg ?
+            Double(weightValue) :
+            Double(weightValue) * 0.453592
+        return weightInKg * 30
     }
     
-}
-
-
-#Preview{
-    OnboardingWeightView()
-        .preferredColorScheme(.dark)
-        .environmentObject(TrackingWaterViewModel(modelContext: try! ModelContainer(for: WaterInTake.self).mainContext))
 }

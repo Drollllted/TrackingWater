@@ -10,21 +10,33 @@ import SwiftData
 
 @main
 struct TrackingWaterApp: App {
-    
     let container: ModelContainer
+    @State private var showOnboarding: Bool
+    @StateObject private var vm: TrackingWaterViewModel
     
     init() {
         do {
             container = try ModelContainer(for: WaterInTake.self)
+            let context = container.mainContext
+            _vm = StateObject(wrappedValue: TrackingWaterViewModel(modelContext: context))
+            showOnboarding = !OnboardingManager.onboardingFlag
         } catch {
-            fatalError("Failed to create ModelContainer for WaterInTake: \(error.localizedDescription)")
+            fatalError("Failed to create ModelContainer: \(error)")
         }
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView(vm: TrackingWaterViewModel(modelContext: ModelContext(container)))
-                .preferredColorScheme(.dark)
+            
+            if vm.showOnboarding || !OnboardingManager.onboardingFlag {
+                OnboardingView(showMainView: $vm.showOnboarding)
+                    .environmentObject(vm)
+                    .preferredColorScheme(.dark)
+            } else {
+                ContentView()
+                    .environmentObject(vm)
+                    .preferredColorScheme(.dark)
+            }
         }
     }
 }

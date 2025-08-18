@@ -9,9 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct OnboardingView: View {
-    
+    @EnvironmentObject var vm: TrackingWaterViewModel
+    @Environment(\.modelContext) private var modelContext
     @State private var text: String = "💧 Water is your superpower!"
     @State private var isVisible: Bool = false
+    @Binding var showMainView: Bool
     
     var body: some View {
         NavigationStack {
@@ -26,8 +28,8 @@ struct OnboardingView: View {
                 Spacer()
                 
                 NavigationLink {
-                    OnboardingWeightView()
-                        .environmentObject(TrackingWaterViewModel(modelContext: try! ModelContainer(for: WaterInTake.self).mainContext))
+                    OnboardingWeightView(showMainView: $showMainView)
+                        .environmentObject(vm)
                 } label: {
                     Text("Get Started")
                         .font(.system(size: 20))
@@ -51,9 +53,4 @@ struct OnboardingView: View {
             isVisible = true
         }
     }
-}
-
-#Preview {
-    OnboardingView()
-        .preferredColorScheme(.dark)
 }

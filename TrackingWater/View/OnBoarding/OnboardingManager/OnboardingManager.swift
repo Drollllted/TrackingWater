@@ -24,4 +24,10 @@ final class OnboardingManager {
         onboardingFlag = true
     }
     
+    //For Tests
+    
+    static func resetOnboarding() {
+        onboardingFlag = false
+    }
+    
 }

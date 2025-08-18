@@ -14,6 +14,7 @@ final class TrackingWaterViewModel: ObservableObject {
     @Published var selectedDay = Date()
     @Published var countInDay: Double = 3000
     @Published private(set) var weeklyData: [DailyWaterData] = []
+    var showOnboarding: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -22,8 +23,10 @@ final class TrackingWaterViewModel: ObservableObject {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        
         fetchCurrentWaterDay()
         updateWeeklyData()
+        self.countInDay = UserDefaults.standard.double(forKey: "waterNorm") > 0 ? UserDefaults.standard.double(forKey: "waterNorm") : 3000
         
         NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
             .sink { [weak self] _ in
@@ -132,4 +135,24 @@ final class TrackingWaterViewModel: ObservableObject {
             UserDefaults.standard.set(Date(), forKey: "lastUpdateTodayWater")
         }
     }
+    
+    //MARK: - Update CountInDay
+    
+    func updateCountInDay(amountInDay: Double) {
+        countInDay = amountInDay
+        savedNewCountInDay()
+    }
+    
+    private func savedNewCountInDay() {
+        UserDefaults.standard.set(countInDay, forKey: "waterNorm")
+    }
+    
+    //MARK: - Reset onboardingView
+    
+    func resetOnboardingView() {
+        OnboardingManager.resetOnboarding()
+        showOnboarding = true
+        print("Onboarding has been reset")
+    }
+    
 }

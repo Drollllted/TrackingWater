@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     
-    @StateObject var vm: TrackingWaterViewModel
+    @EnvironmentObject var vm: TrackingWaterViewModel
     @State private var showFirstTapModal = false
     @State private var showSecondTapModal = false
     @State private var selectedAmount: EnumVariables? = .twoHundredhalf
