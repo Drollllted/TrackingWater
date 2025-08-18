@@ -1,0 +1,27 @@
+//
+//  OnboardingManager.swift
+//  TrackingWater
+//
+//  Created by Drolllted on 18.08.2025.
+//
+
+import Foundation
+
+
+final class OnboardingManager {
+    
+    private static var onboardingKey: String = "onboardingKey"
+    
+    static var onboardingFlag: Bool {
+        get{
+            UserDefaults.standard.bool(forKey: onboardingKey)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: onboardingKey)
+        }
+    }
+    
+    static func completeOnboarding(){
+        onboardingFlag = true
+    }
+    
+}

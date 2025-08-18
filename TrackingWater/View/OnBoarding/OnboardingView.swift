@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OnboardingView: View {
     
@@ -15,17 +16,18 @@ struct OnboardingView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 60) {
-                    Text(text)
-                        .bold()
-                        .font(.largeTitle)
-                        .padding()
-                        .opacity(isVisible ? 1.0 : 0.0)
-                        .animation(.easeIn(duration: 1.5), value: isVisible)
+                Text(text)
+                    .bold()
+                    .font(.largeTitle)
+                    .padding()
+                    .opacity(isVisible ? 1.0 : 0.0)
+                    .animation(.easeIn(duration: 1.5), value: isVisible)
                 
                 Spacer()
                 
-                Button {
-                    
+                NavigationLink {
+                    OnboardingWeightView()
+                        .environmentObject(TrackingWaterViewModel(modelContext: try! ModelContainer(for: WaterInTake.self).mainContext))
                 } label: {
                     Text("Get Started")
                         .font(.system(size: 20))
@@ -39,7 +41,8 @@ struct OnboardingView: View {
                         }
                         .padding()
                 }
-
+                
+                
                 
             }
             .padding()
